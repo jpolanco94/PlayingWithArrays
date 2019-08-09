@@ -2,10 +2,17 @@
 
 namespace ArrayGames
 {
+    struct TheThreeArrays
+    {
+        public int[] arrayA;
+        public int[] arrayB;
+        public int[] arrayC;
+    }
+
     class Program
     {
         //I learned of bubble and selection sorts from the Microsoft Data Structures and Algorithms course.
-        static void BubbleSort(int[] enteredArray)
+        static int[] BubbleSort(int[] enteredArray)
         {
             int n = enteredArray.Length;
             bool swapped;
@@ -23,13 +30,9 @@ namespace ArrayGames
                     }
                 }
             } while (swapped == true);
-            foreach (int value in enteredArray)
-            {
-                Console.Write(value.ToString() + " ");
-            }
-            Console.WriteLine("\n");
+            return enteredArray;
         }
-        static void SelectionSort(int[] enteredArray)
+        static int[] SelectionSort(int[] enteredArray)
         {
             int n = enteredArray.Length;
             int temp, smallest;
@@ -48,13 +51,9 @@ namespace ArrayGames
                 enteredArray[smallest] = enteredArray[i];
                 enteredArray[i] = temp;
             }
-            foreach (int value in enteredArray)
-            {
-                Console.Write(value.ToString() + " ");
-            }
-            Console.WriteLine("\n");
+            return enteredArray;
         }
-        public static void AverageOfArrayValues(int[] enteredArray)
+        static double AverageOfArrayValues(int[] enteredArray)
         {
             double total = 0;
             int count = 0;
@@ -64,31 +63,9 @@ namespace ArrayGames
                 total += value;
             }
             double averageOfArray = total / count;
-            Console.WriteLine(averageOfArray);
+            return averageOfArray;
         }
-        
-        static void SortingArraysNotGoodMethod(int[] enteredArray)
-        {
-            Console.WriteLine("\nThis will take some time.");
-            //This solution is not the most optimal but its the best I could come up with
-            for (int i = 0; i < enteredArray.Length - 1; i++)
-            {
-                for (int j = i+1; j < enteredArray.Length; j++)
-                {
-                    while (enteredArray[i] > enteredArray[j])
-                    {
-                        int temp = enteredArray[i];
-                        enteredArray[i] = enteredArray[i + 1];
-                        enteredArray[i + 1] = temp;
-                    }
-                }
-            }
-            foreach (int value in enteredArray)
-            {
-                Console.Write(value.ToString() + " ");
-            }
-        }
-        static void ReverseArrays(int[] enteredArray)
+        static int[] ReverseArrays(int[] enteredArray)
         {
             for (int i = 0; i < enteredArray.Length / 2; i++) 
             {
@@ -96,20 +73,20 @@ namespace ArrayGames
                 enteredArray[i] = enteredArray[enteredArray.Length - i - 1];
                 enteredArray[enteredArray.Length - i - 1] = temp;
             }
-            foreach (var value in enteredArray)
-            {
-                Console.Write(value.ToString() + " ");
-            }
-            Console.WriteLine("\n");
+            return enteredArray;
         }
-        static void RotateArrays(int[] enteredArray, int direction, int numberOfPositions)
+        static int[] RotateArrays(int[] enteredArray, string direction, int numberOfPositions)
         {
+            //This solution to rotating arrays seems to be very different to the other solutions others came up
+            //with. It works for the getting the job done but will not work if we want to rotate the array one
+            //position past the length of the array.
             
             int n = enteredArray.Length;
             int[] temp = new int[n];
-            if (direction == 1) // Rotating Left
+            direction.ToLower();
+            if (direction == "left")
             {
-                //Deep copy of our entered array into a temporary array
+                //Deep copy of our entered array to have two similar but completely different arrays
                 for (int i = 0; i < n; i++)
                 {
                     temp[i] = enteredArray[i];
@@ -127,13 +104,8 @@ namespace ArrayGames
 
                     enteredArray[j] = temp[i];
                 }
-                foreach (int x in enteredArray)
-                {
-                    Console.Write(x.ToString() + " ");
-                }
-                Console.WriteLine("\n");
             }
-            if (direction == 2)//Rotating Right
+            if (direction == "right")
             {
                 for (int i = 0; i < n; i++)
                 {
@@ -149,13 +121,8 @@ namespace ArrayGames
                 {
                     enteredArray[i] = temp[j];
                 }
-                foreach (int x in enteredArray)
-                {
-                    Console.Write(x.ToString() + " ");
-                }
-                Console.WriteLine("\n");
             }
-         
+                return enteredArray;
         }
         //The palindrome checker is a whiteboarding exercise that was given to us by our mentors
         //that I enjoyed.
@@ -172,37 +139,51 @@ namespace ArrayGames
             }
             return checker;
         }
+        static int[] DisplayArrays(int[] enteredArray)
+        {
+            foreach (int x in enteredArray)
+            {
+                Console.Write(x.ToString()+" ");
+            }
+            Console.WriteLine("\n");
+            return enteredArray;
+        }
+
+        //The way this code was organized is not optimal but it gets the job done. I will continue to work
+        //on this code to try to get the 'cleanest' solution.
         static void Main(string[] args)
         {
-            int[] arrayA = { 0, 2, 4, 6, 8, 10 };
-            int[] arrayB = { 1, 3, 5, 7, 9 };
-            int[] arrayC = { 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 9 };
-            Console.Write("The average of Array A is:  ");
-            AverageOfArrayValues(arrayA);
-            Console.Write("\nThe average of Array B is:  ");
-            AverageOfArrayValues(arrayB);
-            Console.Write("\nThe average of Array C is:  ");
-            AverageOfArrayValues(arrayC);
-            Console.Write("\nArray A reversed is:  ");
-            ReverseArrays(arrayA);
-            Console.Write("\nArry B reversed is:  ");
-            ReverseArrays(arrayB);
-            Console.Write("\nArray C reversed is:  ");
-            ReverseArrays(arrayC);
-            ////SortingArraysNotGoodMethod(arrayC);
-            Console.Write("\nArray C sorted using Selection Sort is:  ");
-            SelectionSort(arrayC);
-            Console.Write("\nArray C sorted using Bubble Sort is:  ");
-            BubbleSort(arrayC);
-            Console.Write("\nArray A rotated two positions to the left is:  ");
-            RotateArrays(arrayA, 1, 2);
-            Console.Write("\nArray B rotated two posisiotns to the right is:  ");
-            RotateArrays(arrayB, 2, 3);
-            Console.Write("\nArray C rotated four positions to the left is:  ");
-            RotateArrays(arrayC, 1, 4);
-            Console.WriteLine("Enter a string you think might be a palindrome. If it is you'll get true. If not you'll get false.");
+            TheThreeArrays a1, a2, b1, b2, c1, c2, c3, c4;
+            a1.arrayA = new int[] { 0, 2, 4, 6, 8, 10 };
+            a2.arrayA = new int[] { 0, 2, 4, 6, 8, 10 };
+            b1.arrayB = new int[] { 1, 3, 5, 7, 9 };
+            b2.arrayB = new int[] { 1, 3, 5, 7, 9 };
+            c1.arrayC = new int[] { 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 9 };
+            c2.arrayC = new int[] { 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 9 };
+            c3.arrayC = new int[] { 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 9 };
+            c4.arrayC = new int[] { 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 9 };
+
+            Console.WriteLine($"The average of Array A is: {AverageOfArrayValues(a1.arrayA)}\n");
+            Console.WriteLine($"The average of Array B is: {AverageOfArrayValues(b1.arrayB)}\n");
+            Console.WriteLine($"The average of Array C is: {AverageOfArrayValues(c1.arrayC)}\n");
+            Console.Write("Array A reversed is:  "); DisplayArrays(ReverseArrays(a1.arrayA));
+            Console.Write("\nArray B reversed is:  "); DisplayArrays(ReverseArrays(b1.arrayB));
+            Console.Write("\nArray C reversed is:  "); DisplayArrays(ReverseArrays(c1.arrayC));
+            Console.Write("Array A rotated to the left two positions is:  ");
+            DisplayArrays(RotateArrays(a2.arrayA, "left", 7));
+            Console.Write("Array B rotated to the right two positions is:  ");
+            DisplayArrays(RotateArrays(b2.arrayB, "right", 2));
+            Console.Write("Array C rotated to the left four positions is:  ");
+            DisplayArrays(RotateArrays(c2.arrayC, "left", 4));
+            Console.Write("Array C sorted using Bubble Sort is:  ");
+            DisplayArrays(BubbleSort(c3.arrayC));
+            Console.Write("Array C sorted using Selection Sort is:  ");
+            DisplayArrays(BubbleSort(c4.arrayC));
+            Console.WriteLine("Enter a string you think might be a palindrome. If it is you'll get true. " +
+                "If not you'll get false.");
             string s = Console.ReadLine();
             Console.WriteLine(PalindromeChecker(s));
+
         }
     }
 }
